@@ -1,22 +1,22 @@
-.PHONY: comp sim wave clean
-
-SRC := sourcecode/adder8.sv \
-       sourcecode/tb_adder8.sv
-
-ARG := --top tb_adder8 \
+TOP := adder8
+SRC := sourcecode/$(TOP).sv \
+       sourcecode/tb_$(TOP).sv
+ARG := --top tb_$(TOP) \
        --binary        \
         -Wno-fatal     \
        --trace         \
        --trace-structs
 
+.PHONY: comp sim wave clean
+
 comp: $(SRC)
 	verilator $(SRC) $(ARG)
 
 sim: comp
-	./obj_dir/Vtb_adder8
+	./obj_dir/Vtb_$(TOP)
 
 wave: sim
-	gtkwave adder8.vcd
+	gtkwave $(TOP).vcd
 
 clean:
-	rm -rf obj_dir adder8.vcd
+	rm -rf obj_dir $(TOP).vcd
